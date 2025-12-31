@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Apply dashboard updates",
+			"type": "shell",
+			"command": "echo Updating dashboard to single card view",
+			"group": "build"
+		}
+	]
+}
