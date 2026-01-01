@@ -1,4 +1,4 @@
-import 'package:butceakintisi/core/components/floating_action_button.dart';
+import 'package:butceakintisi/core/components/bottom_appbar.dart';
 import 'package:butceakintisi/core/utils/radial_bg.dart';
 import 'package:flutter/material.dart';
 
@@ -34,9 +34,6 @@ class Dashboard extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: const CustomFloatingActionButton(
-        child: Icon(Icons.add, color: Colors.white),
-      ),
       appBar: AppBar(
         title: const Center(
             child: Text(
@@ -47,19 +44,7 @@ class Dashboard extends StatelessWidget {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        height: 60,
-        child: Center(
-          child: Text(
-            '© çükülata',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.blue.shade900),
-          ),
-        ),
-      ),
+      bottomNavigationBar: const CustomBottomAppBar(),
     );
   }
 }
