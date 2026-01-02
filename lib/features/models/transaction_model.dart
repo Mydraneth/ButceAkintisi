@@ -5,6 +5,7 @@ class MoneyTransaction {
   final String description;
   final DateTime date;
   final Currency currency;
+  final TransactionType type;
 
   MoneyTransaction({
     required this.id,
@@ -13,6 +14,7 @@ class MoneyTransaction {
     required this.description,
     required this.date,
     required this.currency,
+    required this.type,
   });
 
   Map<String, dynamic> toJson() => {
@@ -22,6 +24,7 @@ class MoneyTransaction {
         'description': description,
         'date': date.toIso8601String(),
         'currency': currency,
+        'type': type,
       };
 
   factory MoneyTransaction.fromJson(Map<String, dynamic> json) {
@@ -31,9 +34,13 @@ class MoneyTransaction {
         amount: json['amount'],
         description: json['description'],
         date: DateTime.parse(json['date']),
-        currency: Currency.values
-            .firstWhere((e) => e.toString() == json['currency']));
+        currency:
+            Currency.values.firstWhere((e) => e.toString() == json['currency']),
+        type: TransactionType.values
+            .firstWhere((e) => e.toString() == json['type']));
   }
 }
 
 enum Currency { usd, eur, gbp, aud, tl }
+
+enum TransactionType { income, expense, transfer }

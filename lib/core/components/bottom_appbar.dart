@@ -22,29 +22,33 @@ class CustomBottomAppBar extends StatelessWidget {
       elevation: 0,
       child: Container(
         decoration: BoxDecoration(
+          color: const Color(0xFF141326).withAlpha((0.92 * 255).toInt()),
           border: Border(
             top: BorderSide(
               color: const Color.fromARGB(255, 255, 255, 255)
-                  .withValues(alpha: 0.2),
+                  .withAlpha((0.2 * 255).toInt()),
               width: 1.0,
             ),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildNavItem(Icons.account_balance, 0), // Home
-            _buildNavItem(Icons.receipt, 1), // Transactions
+        child: SafeArea(
+          top: false,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(Icons.account_balance, 0), // Home
+              _buildNavItem(Icons.receipt, 1), // Transactions
 
-            // ORTA BUTON (Ekleme)
-            // Genelde bu ayrı bir modal açar, o yüzden index mantığının dışında tutabiliriz
-            // veya özel bir logic ekleyebiliriz. Şimdilik pasif bırakıyorum.
-            const CustomFloatingActionButton(
-                child: Icon(Icons.add, color: Colors.white)),
+              // ORTA BUTON (Ekleme)
+              // Genelde bu ayrı bir modal açar, o yüzden index mantığının dışında tutabiliriz
+              // veya özel bir logic ekleyebiliriz. Şimdilik pasif bırakıyorum.
+              const CustomFloatingActionButton(
+                  child: Icon(Icons.add, color: Colors.white)),
 
-            _buildNavItem(Icons.credit_card_sharp, 2), // Accounts
-            _buildNavItem(Icons.settings, 3), // Settings
-          ],
+              _buildNavItem(Icons.credit_card_sharp, 2), // Accounts
+              _buildNavItem(Icons.settings, 3), // Settings
+            ],
+          ),
         ),
       ),
     );

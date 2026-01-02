@@ -3,6 +3,7 @@ import 'package:butceakintisi/features/pages/accounts_page.dart';
 import 'package:butceakintisi/features/pages/home_page.dart';
 import 'package:butceakintisi/features/pages/settings_page.dart';
 import 'package:butceakintisi/features/pages/transactions_page.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -26,7 +27,10 @@ GoRouter goRouter(GoRouterRef ref) {
             routes: [
               GoRoute(
                 path: '/home',
-                builder: (context, state) => const HomePage(),
+                pageBuilder: (context, state) => _defaultTransitionPage(
+                  state.pageKey,
+                  const HomePage(),
+                ),
               ),
             ],
           ),
@@ -35,7 +39,10 @@ GoRouter goRouter(GoRouterRef ref) {
             routes: [
               GoRoute(
                 path: '/transactions',
-                builder: (context, state) => const TransactionsPage(),
+                pageBuilder: (context, state) => _defaultTransitionPage(
+                  state.pageKey,
+                  const TransactionsPage(),
+                ),
               ),
             ],
           ),
@@ -44,8 +51,10 @@ GoRouter goRouter(GoRouterRef ref) {
             routes: [
               GoRoute(
                 path: '/accounts',
-                builder: (context, state) =>
-                    const AccountsPage(), // Placeholder
+                pageBuilder: (context, state) => _defaultTransitionPage(
+                  state.pageKey,
+                  const AccountsPage(),
+                ), // Placeholder
               ),
             ],
           ),
@@ -53,14 +62,41 @@ GoRouter goRouter(GoRouterRef ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                  path: '/settings',
-                  builder: (context, state) =>
-                      const SettingsPage() // Placeholder
-                  ),
+                path: '/settings',
+                pageBuilder: (context, state) => _defaultTransitionPage(
+                  state.pageKey,
+                  const SettingsPage(),
+                ), // Placeholder
+              ),
             ],
           ),
         ],
       ),
     ],
+  );
+}
+
+CustomTransitionPage<void> _defaultTransitionPage(
+  LocalKey pageKey,
+  Widget child,
+) {
+  return CustomTransitionPage<void>(
+    key: pageKey,
+    transitionDuration: const Duration(milliseconds: 250),
+    reverseTransitionDuration: const Duration(milliseconds: 250),
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final curve = CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+      return FadeTransition(
+        opacity: curve,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 0.04),
+            end: Offset.zero,
+          ).animate(curve),
+          child: child,
+        ),
+      );
+    },
   );
 }
