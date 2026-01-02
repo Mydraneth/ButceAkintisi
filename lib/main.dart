@@ -1,29 +1,30 @@
-import 'package:butceakintisi/features/dashboard/dashboard.dart';
+import 'package:butceakintisi/core/router.dart'; // Router dosyan
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  // 1. Setup Flutter bindings
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // 2. Run App wrapped in ProviderScope
-  // We do NOT open the database here. The provider handles it automatically.
-  runApp(
-    const MyApp(),
-  );
+  // ProviderScope tüm Riverpod sistemi için şarttır
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Manuel tanımladığımız provider'ı izliyoruz
+    final router = ref.watch(goRouterProvider);
+
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'Bütçe Akıntısı',
       debugShowCheckedModeBanner: false,
-      title: 'Riverpod Database Example',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFE3B53C)),
+        useMaterial3: true,
+        // Scaffold arka planını koyu yapalım ki Dashboard ile uyumlu olsun (opsiyonel)
+        scaffoldBackgroundColor: Colors.grey[900],
       ),
-      home: const Dashboard(),
     );
   }
 }

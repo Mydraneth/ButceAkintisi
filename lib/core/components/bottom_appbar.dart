@@ -2,7 +2,15 @@ import 'package:butceakintisi/core/components/floating_action_button.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
-  const CustomBottomAppBar({super.key});
+  // EKLENDİ: Hangi sekmede olduğumuzu ve tıklama olayını dışarıdan alıyoruz.
+  final int selectedIndex;
+  final Function(int) onItemTapped;
+
+  const CustomBottomAppBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemTapped,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +24,42 @@ class CustomBottomAppBar extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: const Color.fromARGB(255, 0, 0, 0).withValues(alpha: 0.2),
+              color: const Color.fromARGB(255, 255, 255, 255)
+                  .withValues(alpha: 0.2),
               width: 1.0,
             ),
           ),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(Icons.account_balance, color: Colors.white),
-            Icon(Icons.receipt, color: Colors.white),
-            CustomFloatingActionButton(
+            _buildNavItem(Icons.account_balance, 0), // Home
+            _buildNavItem(Icons.receipt, 1), // Transactions
+
+            // ORTA BUTON (Ekleme)
+            // Genelde bu ayrı bir modal açar, o yüzden index mantığının dışında tutabiliriz
+            // veya özel bir logic ekleyebiliriz. Şimdilik pasif bırakıyorum.
+            const CustomFloatingActionButton(
                 child: Icon(Icons.add, color: Colors.white)),
-            Icon(Icons.credit_card_sharp, color: Colors.white),
-            Icon(Icons.menu_book, color: Colors.white),
+
+            _buildNavItem(Icons.credit_card_sharp, 2), // Accounts
+            _buildNavItem(Icons.settings, 3), // Settings
           ],
-          // line at the top of bottom app bar
         ),
+      ),
+    );
+  }
+
+  // Kod tekrarını önlemek için küçük bir yardımcı metod
+  Widget _buildNavItem(IconData icon, int index) {
+    final isSelected = selectedIndex == index;
+    return IconButton(
+      onPressed: () => onItemTapped(index),
+      icon: Icon(
+        icon,
+        // Seçiliyse beyaz, değilse biraz soluk yapalım
+        color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.5),
+        size: 28,
       ),
     );
   }
